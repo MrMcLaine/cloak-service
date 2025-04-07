@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: cloak-service
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run start:dev
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  redis:
+    container_name: cloak-redis
+    image: redis:alpine
+    ports:
+      - '6379:6379'
