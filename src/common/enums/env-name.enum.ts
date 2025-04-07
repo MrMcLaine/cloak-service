@@ -1,0 +1,7 @@
+export enum EnvName {
+    PORT = 'PORT',
+    NODE_ENV = 'NODE_ENV',
+    REDIS_HOST = 'REDIS_HOST',
+    REDIS_PORT = 'REDIS_PORT',
+    REDIS_PASSWORD = 'REDIS_PASSWORD',
+}
