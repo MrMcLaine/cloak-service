@@ -1,6 +1,6 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { createTestApp, sendCloakCheckRequest } from './helpers';
-import { testIps } from './__data__';
+import { testIps, validIps } from './__data__';
 
 describe('CloakController (e2e) – Body validation', () => {
     let app: INestApplication;
@@ -53,7 +53,7 @@ describe('CloakController (e2e) – Body validation', () => {
 
     it('should detect bot when valid IP is provided without headers', async () => {
         const res = await sendCloakCheckRequest(app, {
-            ip: testIps.VALID_PUBLIC_GOOGLE,
+            ip: validIps.MONTREAL_IP,
         });
 
         expect(res.status).toBe(HttpStatus.CREATED);
