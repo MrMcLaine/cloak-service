@@ -1,6 +1,6 @@
 import { botReasons, headerValues } from '../constants';
 
-export function connectionCheckUtil(connection?: string): string | null {
+export const connectionCheckUtil = (connection?: string): string | null => {
     if (!connection) return botReasons.MISSING_CONNECTION_HEADER;
 
     const value = connection.toLowerCase();
@@ -10,4 +10,4 @@ export function connectionCheckUtil(connection?: string): string | null {
     }
 
     return null;
-}
+};

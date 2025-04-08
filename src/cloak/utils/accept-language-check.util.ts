@@ -1,8 +1,8 @@
 import { botReasons } from '../constants';
 
-export function acceptLanguageCheckUtil(
+export const acceptLanguageCheckUtil = (
     acceptLanguage?: string
-): string | null {
+): string | null => {
     const MINIMAL_ACCEPT_LANGUAGE_LENGTH = 2;
 
     if (
@@ -13,4 +13,4 @@ export function acceptLanguageCheckUtil(
     }
 
     return null;
-}
+};

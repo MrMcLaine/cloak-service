@@ -4,6 +4,7 @@ import {
     acceptLanguageCheckUtil,
     connectionCheckUtil,
     refererCheckUtil,
+    secFetchHeadersCheckUtil,
     userAgentCheckUtil,
 } from './utils';
 import { CheckResponseDto } from './dto';
@@ -18,7 +19,6 @@ export class CloakService {
         console.log(ip, headers);
 
         const uaReason = userAgentCheckUtil(headers[headerKeys.USER_AGENT]);
-
         if (uaReason) reasons.push(uaReason);
 
         const acceptLangReason = acceptLanguageCheckUtil(
@@ -33,8 +33,10 @@ export class CloakService {
             headers[headerKeys.CONNECTION]
         );
         if (connectionReason) reasons.push(connectionReason);
+
+        const secFetchReason = secFetchHeadersCheckUtil(headers);
+        if (secFetchReason) reasons.push(secFetchReason);
         //check ip
-        //check sec-fetch-site, sec-fetch-user, sec-fetch-mode
         //check Content-Type
         //check rate limit
         return {
