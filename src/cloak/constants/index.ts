@@ -1,2 +1,3 @@
 export * from './bot-reasons';
-export * from './header-object-names';
+export * from './header-keys';
+export * from './header-values';
