@@ -13,5 +13,7 @@ export const configModuleOptions: ConfigModuleOptions = {
         [EnvName.REDIS_HOST]: Joi.string().required(),
         [EnvName.REDIS_PORT]: Joi.number().required(),
         [EnvName.REDIS_PASSWORD]: Joi.string().allow(''),
+
+        [EnvName.VPN_API_KEY]: Joi.string().required(),
     }),
 };

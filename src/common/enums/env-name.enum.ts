@@ -4,4 +4,5 @@ export enum EnvName {
     REDIS_HOST = 'REDIS_HOST',
     REDIS_PORT = 'REDIS_PORT',
     REDIS_PASSWORD = 'REDIS_PASSWORD',
+    VPN_API_KEY = 'VPN_API_KEY',
 }

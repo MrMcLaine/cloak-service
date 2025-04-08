@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { VpnDetectionService } from '../vpn-api/vpn-detection.service';
 import { headerKeys } from './constants';
 import {
     acceptLanguageCheckUtil,
@@ -13,6 +14,8 @@ import { CheckResponseDto } from './dto';
 
 @Injectable()
 export class CloakService {
+    constructor(private readonly vpnDetectionService: VpnDetectionService) {}
+
     async analyze(
         ip: string,
         headers: Record<string, any>
@@ -46,7 +49,17 @@ export class CloakService {
 
         const geoReason = geoIpCheckUtil(ip);
         if (geoReason) reasons.push(geoReason);
-        //check ip
+
+        //TODO add the reasons before checks
+        const vpnReason = await this.vpnDetectionService.check(ip);
+
+        if (vpnReason) {
+            return {
+                isBot: true,
+                reason: vpnReason,
+            };
+        }
+
         //check rate limit
         return {
             isBot: false,

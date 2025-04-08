@@ -6,5 +6,6 @@ export const botReasons = {
     SUSPICIOUS_CONTENT_TYPE: 'Unexpected or missing Content-Type header',
     SUSPICIOUS_GEOLOCATION: 'IP has suspicious or generic geo location',
     SUSPICIOUS_USER_AGENT: 'User-Agent includes suspicious keyword',
+    VPN_DETECTION: 'VPN detected',
     UNKNOWN_IP_GEOLOCATION: 'GeoIP lookup failed for IP',
 };
