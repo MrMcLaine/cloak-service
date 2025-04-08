@@ -1,6 +1,8 @@
 # Cloak Service 🕵️‍♂️
 
-**Cloak Service** is a RESTful API that determines whether a user is a **bot or a real human**, based on their IP address, User-Agent, and other metadata. The goal is to filter out bot traffic before serving sensitive or ad-related content.
+**Cloak Service** is a RESTful API that determines whether a user is a **bot or a real human**, based on their IP
+address, User-Agent, and other metadata. The goal is to filter out bot traffic before serving sensitive or ad-related
+content.
 
 This tool is commonly used in traffic filtering for marketing or advertising systems.
 
@@ -22,14 +24,19 @@ The service analyzes the incoming request using the following criteria:
 
 - ✅ **User-Agent**: suspicious keywords like `curl`, `python`, `java`, or missing UA
 - ✅ **Accept-Language**: missing or non-human-like values
-- ✅ **Referer**: missing or set to localhost/IP
-- ✅ **IP address**: private, local, or invalid ranges (e.g. `127.0.0.1`, `192.168.*`)
-- ✅ **Connection header**: e.g. `connection: close` may indicate a bot
+- ✅ **Referer**: missing, set to localhost, or private IPs
+- ✅ IP address:
+    - Private/local IPs like 127.0.0.1, 192.168.\*
+    - Invalid or unknown geolocation
+    - Geolocation lacking both city and region
+- ✅ **Connection header**: anything other than keep-alive may indicate automation
+- ✅ **Content-Type** — unexpected MIME types like text/plain, application/xml (typically not used in browser page loads)
 - ✅ **Browser-only headers**: absence of headers like `sec-fetch-site`, `sec-fetch-user`, `sec-fetch-mode`
-- ✅ **Content-Type**: unexpected values such as `text/plain` or `application/json` in a browser flow
+- ✅ **Geolocation**:
 - ✅ **Rate limit**: too many requests from the same IP in a short period
+- ✅ VPN/Proxy/Tor Detection: uses `vpnapi.io` to detect anonymized IPs
 
-If multiple indicators are triggered, the service flags the request as `bot`.
+If one or more indicators are triggered, the request is flagged as `bot`.
 
 ---
 
