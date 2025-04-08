@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { headerObjectNames } from './constants';
 import { CheckResponseDto } from './dto';
+import { userAgentCheckUtil } from './utils';
 
 @Injectable()
 export class CloakService {
@@ -7,7 +9,14 @@ export class CloakService {
         ip: string,
         headers: Record<string, any>
     ): Promise<CheckResponseDto> {
+        const reasons: string[] = [];
         console.log(ip, headers);
+
+        const uaReason = userAgentCheckUtil(
+            headers[headerObjectNames.USER_AGENT]
+        );
+
+        if (uaReason) reasons.push(uaReason);
         //check primitive words in the user agent
         //check accept language
         //check referer
