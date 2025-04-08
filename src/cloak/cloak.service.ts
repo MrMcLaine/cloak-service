@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { VpnDetectionService } from '../vpn-api/vpn-detection.service';
-import { headerKeys } from './constants';
+import { botReasons, headerKeys } from './constants';
+import { RedisService } from '../redis/redis.service';
 import {
     acceptLanguageCheckUtil,
     connectionCheckUtil,
@@ -15,13 +16,24 @@ import { CheckResponseDto } from './dto';
 
 @Injectable()
 export class CloakService {
-    constructor(private readonly vpnDetectionService: VpnDetectionService) {}
+    constructor(
+        private readonly vpnDetectionService: VpnDetectionService,
+        private readonly redisService: RedisService
+    ) {}
 
     async analyze(
         ip: string,
         headers: Record<string, any>
     ): Promise<CheckResponseDto> {
         const reasons: string[] = [];
+
+        const isRateLimited = await this.redisService.isRateLimited(ip);
+        if (isRateLimited) {
+            return {
+                isBot: true,
+                reasons: [botReasons.TOO_MANY_REQUESTS],
+            };
+        }
 
         const isolatedChecks = [
             userAgentCheckUtil(headers[headerKeys.USER_AGENT]),
@@ -52,8 +64,6 @@ export class CloakService {
                 reasons: [vpnReason],
             };
         }
-
-        //check rate limit
 
         return {
             isBot: false,

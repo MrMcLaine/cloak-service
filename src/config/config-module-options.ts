@@ -10,9 +10,8 @@ export const configModuleOptions: ConfigModuleOptions = {
         [EnvName.NODE_ENV]: Joi.string()
             .valid('development', 'production', 'test')
             .default('development'),
-        [EnvName.REDIS_HOST]: Joi.string().required(),
-        [EnvName.REDIS_PORT]: Joi.number().required(),
-        [EnvName.REDIS_PASSWORD]: Joi.string().allow(''),
+
+        [EnvName.REDIS_URL]: Joi.string().uri().required(),
 
         [EnvName.VPN_API_KEY]: Joi.string().required(),
     }),

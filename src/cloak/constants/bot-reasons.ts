@@ -8,6 +8,7 @@ export const botReasons = {
     SUSPICIOUS_GEOLOCATION: 'IP has suspicious or generic geo location',
     SUSPICIOUS_REFERER: 'Referer includes suspicious pattern',
     SUSPICIOUS_USER_AGENT: 'User-Agent includes suspicious keyword',
+    TOO_MANY_REQUESTS: 'Too many requests from the same IP',
     VPN_DETECTION: 'VPN detected',
     UNKNOWN_IP_GEOLOCATION: 'GeoIP lookup failed for IP',
 };
