@@ -1,4 +1,4 @@
-import geoip from 'geoip-lite';
+import * as geoip from 'geoip-lite';
 import { botReasons } from '../constants';
 
 export const geoIpCheckUtil = (ip: string): string | null => {

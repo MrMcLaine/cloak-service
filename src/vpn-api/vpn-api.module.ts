@@ -4,5 +4,6 @@ import { VpnDetectionService } from './vpn-detection.service';
 
 @Module({
     providers: [VpnApiService, VpnDetectionService],
+    exports: [VpnDetectionService],
 })
 export class VpnApiModule {}

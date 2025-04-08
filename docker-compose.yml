@@ -17,3 +17,14 @@ services:
   redis:
     container_name: cloak-redis
     image: redis:alpine
+
+  test:
+    container_name: cloak-tests
+    build: .
+    command: npm run test:e2e
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - app

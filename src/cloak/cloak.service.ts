@@ -23,7 +23,6 @@ export class CloakService {
     ): Promise<CheckResponseDto> {
         const reasons: string[] = [];
 
-        //TODO add local/private/test networks are flagged (127.0.0.1, 192.168.*, etc).
         const isolatedChecks = [
             userAgentCheckUtil(headers[headerKeys.USER_AGENT]),
             acceptLanguageCheckUtil(headers[headerKeys.ACCEPT_LANGUAGE]),
