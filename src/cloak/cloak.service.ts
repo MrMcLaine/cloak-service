@@ -21,49 +21,41 @@ export class CloakService {
         headers: Record<string, any>
     ): Promise<CheckResponseDto> {
         const reasons: string[] = [];
-        console.log(ip, headers);
 
-        const uaReason = userAgentCheckUtil(headers[headerKeys.USER_AGENT]);
-        if (uaReason) reasons.push(uaReason);
+        const isolatedChecks = [
+            userAgentCheckUtil(headers[headerKeys.USER_AGENT]),
+            acceptLanguageCheckUtil(headers[headerKeys.ACCEPT_LANGUAGE]),
+            refererCheckUtil(headers[headerKeys.REFERER]),
+            connectionCheckUtil(headers[headerKeys.CONNECTION]),
+            secFetchHeadersCheckUtil(headers),
+            contentTypeCheckUtil(headers[headerKeys.CONTENT_TYPE]),
+            geoIpCheckUtil(ip),
+        ];
 
-        const acceptLangReason = acceptLanguageCheckUtil(
-            headers[headerKeys.ACCEPT_LANGUAGE]
-        );
-        if (acceptLangReason) reasons.push(acceptLangReason);
+        for (const reason of isolatedChecks) {
+            if (reason) reasons.push(reason);
+        }
 
-        const refererReason = refererCheckUtil(headers[headerKeys.REFERER]);
-        if (refererReason) reasons.push(refererReason);
+        if (reasons.length > 0) {
+            return {
+                isBot: true,
+                reasons,
+            };
+        }
 
-        const connectionReason = connectionCheckUtil(
-            headers[headerKeys.CONNECTION]
-        );
-        if (connectionReason) reasons.push(connectionReason);
-
-        const secFetchReason = secFetchHeadersCheckUtil(headers);
-        if (secFetchReason) reasons.push(secFetchReason);
-
-        const contentTypeReason = contentTypeCheckUtil(
-            headers[headerKeys.CONTENT_TYPE]
-        );
-        if (contentTypeReason) reasons.push(contentTypeReason);
-
-        const geoReason = geoIpCheckUtil(ip);
-        if (geoReason) reasons.push(geoReason);
-
-        //TODO add the reasons before checks
         const vpnReason = await this.vpnDetectionService.check(ip);
-
         if (vpnReason) {
             return {
                 isBot: true,
-                reason: vpnReason,
+                reasons: [vpnReason],
             };
         }
 
         //check rate limit
+
         return {
             isBot: false,
-            reason: 'No reason',
+            reasons: ['No reasons'],
         };
     }
 }
