@@ -3,6 +3,8 @@ import { headerKeys } from './constants';
 import {
     acceptLanguageCheckUtil,
     connectionCheckUtil,
+    contentTypeCheckUtil,
+    geoIpCheckUtil,
     refererCheckUtil,
     secFetchHeadersCheckUtil,
     userAgentCheckUtil,
@@ -36,8 +38,15 @@ export class CloakService {
 
         const secFetchReason = secFetchHeadersCheckUtil(headers);
         if (secFetchReason) reasons.push(secFetchReason);
+
+        const contentTypeReason = contentTypeCheckUtil(
+            headers[headerKeys.CONTENT_TYPE]
+        );
+        if (contentTypeReason) reasons.push(contentTypeReason);
+
+        const geoReason = geoIpCheckUtil(ip);
+        if (geoReason) reasons.push(geoReason);
         //check ip
-        //check Content-Type
         //check rate limit
         return {
             isBot: false,

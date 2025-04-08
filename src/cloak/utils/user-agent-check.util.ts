@@ -6,7 +6,7 @@ export const userAgentCheckUtil = (userAgentRaw: string): string | null => {
 
     for (const keyword of suspiciousUserAgentsSet) {
         if (userAgent.includes(keyword)) {
-            return `${botReasons.USER_AGENT_SUSPICIOUS}: ${keyword}`;
+            return `${botReasons.SUSPICIOUS_USER_AGENT}: ${keyword}`;
         }
     }
 
