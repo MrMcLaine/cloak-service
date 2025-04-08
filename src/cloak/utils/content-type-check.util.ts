@@ -1,6 +1,4 @@
-import { botReasons } from '../constants';
-
-const BLOCKED_CONTENT_TYPES = ['text/plain', 'application/xml'];
+import { BLOCKED_CONTENT_TYPES, botReasons } from '../constants';
 
 export const contentTypeCheckUtil = (contentType?: string): string | null => {
     const value = contentType?.toLowerCase().split(';')[0] ?? '';
