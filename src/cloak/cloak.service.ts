@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { VpnDetectionService } from '../vpn-api/vpn-detection.service';
 import { botReasons, headerKeys } from './constants';
+import { ONE_HOUR_TTL } from '../redis/constants';
 import { RedisService } from '../redis/redis.service';
 import {
     acceptLanguageCheckUtil,
@@ -35,6 +36,9 @@ export class CloakService {
             };
         }
 
+        const cached = await this.redisService.getCachedResult(ip);
+        if (cached) return cached;
+
         const isolatedChecks = [
             userAgentCheckUtil(headers[headerKeys.USER_AGENT]),
             acceptLanguageCheckUtil(headers[headerKeys.ACCEPT_LANGUAGE]),
@@ -51,10 +55,12 @@ export class CloakService {
         }
 
         if (reasons.length > 0) {
-            return {
+            const result: CheckResponseDto = {
                 isBot: true,
                 reasons,
             };
+            await this.redisService.cacheResult(ip, result, ONE_HOUR_TTL);
+            return result;
         }
 
         const vpnReason = await this.vpnDetectionService.check(ip);

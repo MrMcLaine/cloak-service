@@ -7,6 +7,19 @@ export class RedisDefaultService {
         @Inject('REDIS_CLIENT') private readonly client: RedisClientType
     ) {}
 
+    async get<T>(key: string): Promise<T | null> {
+        const raw = await this.client.get(key);
+
+        return raw ? (JSON.parse(raw) as T) : null;
+    }
+
+    async set<T>(key: string, value: T, ttl: number): Promise<void> {
+        const json = JSON.stringify(value);
+        await this.client.set(key, json, {
+            EX: ttl,
+        });
+    }
+
     async incrementWithTTL(key: string, ttl: number): Promise<number> {
         const multi = this.client.multi();
         multi.incr(key);
